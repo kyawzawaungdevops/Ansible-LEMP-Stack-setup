@@ -15,7 +15,7 @@ It is designed following Ansible best practices and is suitable for **real-world
   - **PHP-FPM** with MySQL extensions
 - Nginx configured to serve PHP applications
 - Role-based Ansible structure
-- Supports passwordless SSH authentication
+- Supports passwordless SSH authentication.
 - Idempotent and repeatable deployments
 
 ---
