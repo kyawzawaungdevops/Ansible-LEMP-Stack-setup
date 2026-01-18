@@ -1,0 +1,19 @@
+# Ansible
+*.retry
+.ansible/
+
+# SSH / Security
+.ssh/
+*.pem
+*.key
+
+# OS / Editor
+.cache/
+.local/
+.viminfo
+.bash_history
+
+# Python
+__pycache__/
+*.pyc
+
