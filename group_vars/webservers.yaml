@@ -1,0 +1,14 @@
+---
+# Nginx Settings
+http_port: 80
+server_name: "_"  # Change this to your domain name (e.g., example.com) later
+document_root: "/var/www/html"
+
+# PHP Settings
+# Using a variable here allows you to easily upgrade versions in the future
+php_version: "8.3"
+php_socket: "/run/php-fpm/www.sock"
+
+# File Permissions
+web_user: "nginx"
+web_group: "nginx"

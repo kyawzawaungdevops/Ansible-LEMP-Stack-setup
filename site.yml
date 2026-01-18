@@ -1,0 +1,20 @@
+---
+# site.yml - The entry point for the entire deployment
+
+- name: Deploy and Configure LEMP Web Servers
+  hosts: webservers
+  become: yes  # This gives Ansible 'sudo' privileges
+  
+  # These variables can be overridden here, 
+  # but they are primarily pulled from group_vars/webservers.yml
+  
+  roles:
+    - nginx
+    - php
+
+# You can add more "plays" here for different server groups
+# - name: Setup Database Servers
+#   hosts: dbservers
+#   become: yes
+#   roles:
+#     - mysql

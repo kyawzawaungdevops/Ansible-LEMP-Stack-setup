@@ -1,0 +1,36 @@
+---
+# tasks file for roles/nginx
+
+- name: Install Nginx
+  package:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Apply Nginx configuration from template
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/default.d
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Nginx
+
+- name: Check Nginx syntax
+  command: nginx -t
+  register: nginx_check
+  changed_when: false
+
+- name: Ensure Nginx is started and enabled on boot
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Create web document root
+  file:
+    path: "{{ document_root }}"
+    state: directory
+    owner: "{{ web_user }}"
+    group: "{{ web_group }}"
+    mode: '0755'

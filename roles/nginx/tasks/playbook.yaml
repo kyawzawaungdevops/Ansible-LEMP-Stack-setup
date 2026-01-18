@@ -1,0 +1,74 @@
+---
+- name: Install Nginx, PHP, and MariaDB on Amazon Linux
+  hosts: web
+  become: yes
+
+  tasks:
+    - name: Update system packages
+      dnf:
+        update_cache: yes
+
+    - name: Install Nginx
+      dnf:
+        name: nginx
+        state: present
+
+    - name: Enable and start Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Install MariaDB server
+      dnf:
+        name: mariadb105-server
+        state: present
+
+    - name: Enable and start MariaDB
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: Install PHP and extensions
+      dnf:
+        name:
+          - php
+          - php-fpm
+          - php-mysqlnd
+        state: present
+
+    - name: Enable and start PHP-FPM
+      service:
+        name: php-fpm
+        state: started
+        enabled: yes
+
+    - name: Configure Nginx to use PHP
+      copy:
+        dest: /etc/nginx/default.d/php.conf
+        content: |
+          location ~ \.php$ {
+              root           /usr/share/nginx/html;
+              fastcgi_pass   unix:/run/php-fpm/www.sock;
+              fastcgi_index  index.php;
+              include        fastcgi_params;
+              fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+          }
+      notify: Restart Nginx
+
+    - name: Create PHP info file
+      copy:
+        dest: /usr/share/nginx/html/phpinfo.php
+        content: |
+          <?php
+          phpinfo();
+          ?>
+        mode: '0644'
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+

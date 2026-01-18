@@ -1,0 +1,27 @@
+---
+# tasks file for roles/php (Amazon Linux Version)
+
+- name: Install PHP-FPM and common extensions
+  dnf:
+    name:
+      - php-fpm
+      - php-mysqli
+      - php-xml
+      - php-curl
+      - php-mbstring
+      - php-json
+    state: present
+
+- name: Ensure PHP-FPM is started and enabled
+  service:
+    name: "php-fpm"
+    state: started
+    enabled: yes
+
+- name: Create a test info.php file
+  copy:
+    dest: "{{ document_root }}/info.php"
+    content: "<?php phpinfo(); ?>"
+    owner: "{{ web_user }}"
+    group: "{{ web_group }}"
+    mode: '0644'

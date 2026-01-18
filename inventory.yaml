@@ -1,0 +1,8 @@
+webservers:  # <--- This name MUST match the filename in group_vars/
+  hosts:
+    web1:
+      ansible_host: 172.31.18.191  # Use your actual IP
+    web2:
+      ansible_host: 172.31.27.172
+  vars:
+    ansible_user: ec2-user
